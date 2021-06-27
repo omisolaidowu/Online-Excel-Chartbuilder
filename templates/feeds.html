@@ -1,0 +1,48 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>feeds</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	<nav id="nav-content" class="nav-content">
+		<a href="/">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="/feed">My Feeds</a>
+	</nav>
+	<form action="/" method="Post">
+  	
+  	<div class="conts">
+      {% for i in feed %}
+      
+  	<div class="myfeed">
+  		{{i.content}}
+  		
+
+  	</div>
+  	<div class="desc">
+  		{{i.description}}
+    </div>
+    <div class="image">
+      <img src="/static/images/{{i.image}}">
+    </div>
+    <div>
+      Posted on {{i.created}}
+  	</div>
+
+  	{% endfor %}
+ 
+  </div>
+  {% endblock %}
+</body>
+
+</html>

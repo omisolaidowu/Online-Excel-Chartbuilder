@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+  <title>home</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+  <nav id="nav-content" class="nav-content">
+    <a href="#">Dashboard</a>
+    <a href="#">Profile</a>
+    <a href="#">My Feeds</a>
+  </nav>
+  <form action="/createdb" method="Post">
+    <input type="text" name="Database name" placeholder="Enter dbname">
+    <input type="submit" value="Submit">
+  </form>
+</body>
+{% endblock %}
+</html>
+
+
+
+
+
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}

@@ -1,0 +1,109 @@
+/*body{
+	background-color: #120201;
+}
+*/
+.nav-content{
+	color: blue;
+	display: inline;
+	margin-left: 15%;
+	font-size: 30px;
+}
+
+.nav-content a{
+	text-decoration: none;
+	margin-left: 10%; 
+}
+
+.post-form{
+	width: 500px;
+	height:250px;
+	border-width: 3px;
+}
+
+img{
+	width:1000px;
+	height: 500px;
+	margin-left: 10%;
+}
+
+button{
+  background-color: #008CBA; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 2px solid #555555;;
+}
+
+.btn{
+	margin-left: 40%;
+}
+
+#data1, #data2, #project{
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.formdiv{
+	border-radius: 5px;
+	background-color: #f2f2f2;
+	padding: 20px;
+	font-size: 17px;
+}
+
+#excel{
+	background-color: #008CBA; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 2px solid #555555;;
+
+}
+
+.myfeed{
+	color: green;
+	font-size: 20px;
+	display: grid;
+	margin-left: 13%;
+	margin-top: 10px;
+
+	
+}
+.conts{
+	display: grid;
+	margin-top: 5%;
+	margin-left: 30%; 
+}
+/*.desc{
+	margin-left: 20%
+}*/
+
+.myfeed, .desc{
+	margin-top: 0;
+}
+
+.message{
+	color:red;
+}
+
+/*.created-form{
+	display: none;
+}*/
+
+/*.nav-content ul{
+	
+}*/

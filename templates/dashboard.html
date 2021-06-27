@@ -1,0 +1,48 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>home</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	
+	<nav id="nav-content" class="nav-content">
+		<a href="/">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="/feed">My Feeds</a>
+	</nav>
+
+  <div class="formdiv">
+	
+	<form action="/upload" method="POST" enctype="multipart/form-data">
+  <p>{{form.excel}}{{csrf_token}}</p>
+  <p>Enter name of x column {{form.data1}}{{csrf_token}}</p>
+  <p>Enter name of y column {{form.data2}}{{csrf_token}}</p>
+  <p>Give your project a name {{form.project}}{{csrf_token}}</p>
+
+  <button type="submit"><strong>Plot Chart</strong></button>
+</form>
+
+</div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+<div class="message">
+    {% for message in messages %}
+      <p><h2>{{ message }}</h2></p>
+    {% endfor %}
+</div>
+   
+  {% endif %}
+{% endwith %}
+<!-- <img src={{image}} alt="Chart"> -->
+</body>
+{% endblock %}
+
+</html>

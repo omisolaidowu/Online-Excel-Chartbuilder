@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>home</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	<nav id="nav-content" class="nav-content">
+		<a href="#">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="#">My Feeds</a>
+	</nav>
+	<form action="/userdb" method="Post">
+		<input type="text" name="Database name" placeholder="Enter dbname">
+		<input type="submit" value="Submit">
+	</form>
+</body>
+{% endblock %}
+</html>

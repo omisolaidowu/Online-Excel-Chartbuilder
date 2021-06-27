@@ -1,0 +1,33 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>home</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	
+	<nav id="nav-content" class="nav-content">
+		<a href="/">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="/feed">My Feeds</a>
+	</nav>
+	
+	<form action="/uploader" method="Post">
+  <dl>
+   
+    {{ render_field(form.image) }}
+  </dl>
+  <p><input type=submit value=Post>
+</form>
+
+</body>
+{% endblock %}
+
+</html>

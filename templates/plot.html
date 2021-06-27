@@ -1,0 +1,31 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>Plot</title>
+
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	<nav id="nav-content" class="nav-content">
+		<a href="/">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="/feed">My Feeds</a>
+	</nav>
+  <img src="{{image}}" id="image">
+
+ <button type="submit" id="btn" class="btn"><strong>Download Graph</strong></button>
+	
+<script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>
+</body>
+{% endblock %}
+
+</html>

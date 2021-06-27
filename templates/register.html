@@ -1,0 +1,34 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>registration</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	<nav id="nav-content" class="nav-content">
+		<a href="#">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="#">My Feeds</a>
+	</nav>
+
+<form action="/register" method="Post">
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_field(form.confirm) }}
+    {{ render_field(form.accept_tos) }}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
+
+</body>
+{% endblock %}
+</html>

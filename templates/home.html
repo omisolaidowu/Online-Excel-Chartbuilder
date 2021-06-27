@@ -1,0 +1,48 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>home</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	
+	<nav id="nav-content" class="nav-content">
+		<a href="/">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="/feed">My Feeds</a>
+	</nav>
+	
+	<form action="/" method="Post" class="post-feed" enctype="multipart/form-data">
+  <dl class="posts">
+    {{ render_field(form.content, class_="post-form") }}
+    {{ render_field(form.description) }}
+    {{ render_field(form.image) }}
+
+    {{ render_field(form.created, class_="created-form") }}
+  </dl>
+  <p><input type=submit value=Post>
+</form>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+<div class="message">
+    {% for message in messages %}
+      <h2>{{ message }}</h2>
+    {% endfor %}
+</div>
+   
+  {% endif %}
+{% endwith %}
+
+
+</body>
+{% endblock %}
+
+</html>
