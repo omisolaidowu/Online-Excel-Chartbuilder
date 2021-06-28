@@ -128,7 +128,7 @@ def home():
 
 
 
-
+# The chart builder:
 @app.route('/plotchart', methods=['GET', 'POST'])	
 def upload_file():
 
