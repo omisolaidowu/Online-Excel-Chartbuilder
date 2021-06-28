@@ -32,10 +32,11 @@ manager.setup(app)
 
 
 class User(Document):
-	doc_type = 'User'
-	username = TextField()
-	password = TextField()
-	email = TextField()
+    doc_type = 'User'
+    username = TextField()
+    password = TextField()
+    email = TextField()
+    excel = TextField()
 
 
 

@@ -1,5 +1,5 @@
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, DateTimeField
-from wtforms import FileField, TextAreaField, FieldList
+from wtforms import FileField, TextAreaField, FieldList, SelectField
 from flask import request, redirect, flash
 import re
 from regex import Regex
@@ -10,6 +10,10 @@ from datetime import datetime
 from uuid import UUID
 import uuid
 from flask_wtf import FlaskForm
+from couchdb import Server
+from db import User
+
+# from app import upload_file
 
 
 class RegistrationForm(Form):
@@ -33,11 +37,24 @@ class UserPostForm(Form):
         if field.data:
             field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
 
+
+
 class upload(Form):
-	excel = FileField('excel')
-	data1 = StringField('Enter name of x column')
-	data2 = StringField('Enter name of y column')
-	project = StringField('Enter title of project')
+    excel = FileField('excel')
+    data1 = StringField('Enter name of x column')
+    data2 = StringField('Enter name of y column')
+    project = StringField('Enter title of project')
+    exsheets = SelectField('Efiles', choices=[])
+
+
+
+# def edit_user(request):    
+#     form = upload(obj=feed)
+#     e_file = server['flaskdb']
+#     map_func = '''function(doc) { emit(doc.doc_rev, doc); }'''
+#     feed = User.query(e_file, map_func, reduce_fun=None, reverse=True)
+#     # feed = User.query.order_by()
+#     form.exsheets.choices = [(g.excel) for g in feed]
 
 
 # def upload(request):

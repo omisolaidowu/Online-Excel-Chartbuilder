@@ -129,23 +129,48 @@ def home():
 
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/plotchart', methods=['GET', 'POST'])	
 def upload_file():
+
+	# This block is getting the excel sheet name from the database and populating it to -->
+	# SelectField in forms.py 
 	form = upload(request.form)
+	server = Server()
+	e_file = server['flaskdb']
+	map_func = '''function(doc) { emit(doc.doc_rev, doc); }'''
+	feed = User.query(e_file, map_func, reduce_fun=None, reverse=True)
+	form.exsheets.choices = [(i.excel) for i in feed]
+	# print(form.exsheets.choices)
+
+	
 	if request.method == 'POST':
+		
+
 		try:
 			file = request.files['excel']
+			file = uset.save(file)
 
+			db = server['flaskdb']
+
+			post = {"excel":file}
+			# print(file)
+			if '.xlsx' in file:
+				doc_id, doc_rev=db.save(post)
+				flash("Upload success! Please select your excel sheet from the dropdown")
+				return redirect('/plotchart')
+				
+			else:
+				flash("Please upload an .xlsx file")
+		except UploadNotAllowed:			
 			x_axis = form.data1.data
 			y_axis = form.data2.data
+			exfile = form.exsheets.data
+
 
 			y_axis2 = form.data2.data
 			y_axis2 = y_axis2.split(", ") #this is a list object (converting y_axis data to list)
-			
-			file = uset.save(file)
-			print(file)
 
-			df = pd.read_excel('static/images/'+file)
+			df = pd.read_excel('static/images/'+exfile)
 			df2 = [raw.replace(' ', '_') for raw in df.columns]
 			df.columns = df2
 			df1 = df.to_dict()
@@ -230,8 +255,7 @@ def upload_file():
 			except KeyError:
 				# return df1
 				flash("One of the columns is not in your Excel sheet")
-		except UploadNotAllowed:
-			flash("You did not select a file")
+
 		except ValueError:
 			flash("That file type is not supported, upload a .xlsx file")
 
