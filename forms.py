@@ -37,14 +37,14 @@ class UserPostForm(Form):
         if field.data:
             field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
 
-
+class excels(Form):
+    excel = FileField('excel')
 
 class upload(Form):
-    excel = FileField('excel')
     data1 = StringField('Enter name of x column')
     data2 = StringField('Enter name of y column')
     project = StringField('Enter title of project')
-    exsheets = SelectField('Efiles', choices=[])
+    exsheets = SelectField('Efiles', coerce=str, choices=[(1, "None")])
 
 
 

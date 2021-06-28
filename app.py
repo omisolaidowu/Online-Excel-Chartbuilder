@@ -4,7 +4,7 @@ from db import Post, User
 from couchdb import Server
 from flask import request, redirect, flash, url_for
 from flask import session
-from forms import RegistrationForm, UserPostForm, upload
+from forms import RegistrationForm, UserPostForm, upload, excels
 from dbsession import DatabaseObject
 from couchdb.client import Database
 from uuid import UUID
@@ -49,7 +49,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 # app.config.from_object(__name__)
 # Session(app)
 app.config['UPLOADED_IMAGES_DEST'] = 'static/images'
-uset = UploadSet('images', extensions=('jpg', 'jpe', 'jpeg', 'png', 'xls', 'xlsx'))
+uset = UploadSet('images', extensions=('xls', 'xlsx'))
 configure_uploads(app, uset)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 server = Server()
@@ -135,6 +135,7 @@ def upload_file():
 	# This block is getting the excel sheet name from the database and populating it to -->
 	# SelectField in forms.py 
 	form = upload(request.form)
+	form2 = excels(request.form)
 	server = Server()
 	e_file = server['flaskdb']
 	map_func = '''function(doc) { emit(doc.doc_rev, doc); }'''
@@ -143,153 +144,156 @@ def upload_file():
 	# print(form.exsheets.choices)
 
 	
-	if request.method == 'POST':
-		
-
+	if request.method == 'POST':	
 		try:
 			file = request.files['excel']
-			file = uset.save(file)
 
-			db = server['flaskdb']
-
-			post = {"excel":file}
-			# print(file)
-			if '.xlsx' in file:
-				doc_id, doc_rev=db.save(post)
-				flash("Upload success! Please select your excel sheet from the dropdown")
-				return redirect('/plotchart')
-				
-			else:
-				flash("Please upload an .xlsx file")
-		except UploadNotAllowed:			
-			x_axis = form.data1.data
-			y_axis = form.data2.data
-			exfile = form.exsheets.data
-
-
-			y_axis2 = form.data2.data
-			y_axis2 = y_axis2.split(", ") #this is a list object (converting y_axis data to list)
-
-			df = pd.read_excel('static/images/'+exfile)
-			df2 = [raw.replace(' ', '_') for raw in df.columns]
-			df.columns = df2
-			df1 = df.to_dict()
-
-			try:
-				ydata = []
-				for i in y_axis2:
-					ydata.append(df1[i])
-
-				new_data = [x_axis, df1[x_axis], y_axis, ydata]
-				new_data = {new_data[a]:new_data[a+1] for a in range(0, len(new_data), 2)}
-
-				plotdata = []
-				for a in y_axis2:
-					plotdata.append(df[a]) # populating df with each data in y_axis2 declared earlier
-				
-				# print(type(plotdata))
-				# return new_data
-				fig, ax = plt.subplots()
-				x = df[x_axis]
-				plt.xlabel(x_axis)
-				plt.ylabel('Frequency of: {}'.format(y_axis))
-				plt.title(form.project.data)
-
-
-
-				# cvar = form.color.data.split(", ") # in case i later decide to allow users enter colours
-
-				cvar = ['blue', 'red', 'green']
-				con = 0 # Counter variable for colors:
-				# Code to increment colors or decrement colors and legend
-				if len(plotdata)>len(cvar):
-					dif = len(plotdata)-len(cvar)
-					for i in range(0, dif):
-						cvar.append('black')
-					for d in plotdata:
-						n = ax.plot(x, d, color=cvar[con])
-						con += 1
-				elif len(cvar)>len(plotdata):
-					dif2 = len(cvar)-len(plotdata)
-					for i in range(0, dif2):
-						cvar.pop()
-					for d in plotdata:
-						n = ax.plot(x, d, color=cvar[con])
-						con += 1
+			if file and form2.validate():
+				try:
+					file = uset.save(file)
+					db = server['flaskdb']
+					post = {"excel":file}
+				except UploadNotAllowed:
+					flash('Please uplaod an excel (.xlsx) file')
+				# print(file)
+				if '.xlsx' in file:
+					doc_id, doc_rev=db.save(post)
+					flash("Upload success! Please select your excel sheet from the dropdown", "success")
+					return redirect('/plotchart')
 				else:
-					for d in plotdata:
-						n = ax.plot(x, d, color=cvar[con])
-						con += 1
+					flash("Please upload an excel (.xlsx) file")
 
-				v = []
-				counter = 0 #counter variable for legend
 
-				for b in cvar:
-					f = mpatches.Patch(color=b, label=y_axis2[counter])
-					counter += 1
-					v.append(f)
-				plt.legend(handles=v)
+			if "plot" in request.form and form.validate():		
+				x_axis = form.data1.data
+				y_axis = form.data2.data
+				exfile = form.exsheets.data
 
-				# Testing legend patches (don't uncomment):
 
-				# ax.legend([n], ['One', 'Two', 'Three'], bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
-				# plt.box(False)
-				# f = mpatches.Patch(label='The red data')
-				# e = mpatches.Patch(label='The red data')
-				# g = mpatches.Patch(label='The red data')
 
-				# Tpatches = [f, e, g]
-				# return fig
-				# plt.savefig('static/images/instant_plot.png')
-				# return new_data
+				y_axis2 = form.data2.data
+				y_axis2 = y_axis2.split(", ") #this is a list object (converting y_axis data to list)
 
-				# Converting generated figure into an HTML readable format
-				pngImage = io.BytesIO()
-				FigureCanvas(fig).print_png(pngImage)
-				pngImageB64String = "data:image/png;base64,"
-				pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+				df = pd.read_excel('static/images/'+exfile)
+				df2 = [raw.replace(' ', '_') for raw in df.columns]
+				df.columns = df2
+				df1 = df.to_dict()
 
-				# Rendering an instance of the generated plot
-				return render_template('plot.html', image=pngImageB64String)
+				try:
+					ydata = []
+					for i in y_axis2:
+						ydata.append(df1[i])
 
-			except KeyError:
-				# return df1
-				flash("One of the columns is not in your Excel sheet")
+					new_data = [x_axis, df1[x_axis], y_axis, ydata]
+					new_data = {new_data[a]:new_data[a+1] for a in range(0, len(new_data), 2)}
+
+					plotdata = []
+					for a in y_axis2:
+						plotdata.append(df[a]) # populating df with each data in y_axis2 declared earlier
+					
+					# print(type(plotdata))
+					# return new_data
+					fig, ax = plt.subplots()
+					x = df[x_axis]
+					plt.xlabel(x_axis)
+					plt.ylabel('Frequency of: {}'.format(y_axis))
+					plt.title(form.project.data)
+
+
+
+					# cvar = form.color.data.split(", ") # in case i later decide to allow users enter colours
+
+					cvar = ['blue', 'red', 'green', 'brown', 'indigo']
+					con = 0 # Counter variable for colors:
+					# Code to increment colors or decrement colors and legend
+					if len(plotdata)>len(cvar):
+						dif = len(plotdata)-len(cvar)
+						for i in range(0, dif):
+							cvar.append('black')
+						for d in plotdata:
+							n = ax.plot(x, d, color=cvar[con])
+							con += 1
+					elif len(cvar)>len(plotdata):
+						dif2 = len(cvar)-len(plotdata)
+						for i in range(0, dif2):
+							cvar.pop()
+						for d in plotdata:
+							n = ax.plot(x, d, color=cvar[con])
+							con += 1
+					else:
+						for d in plotdata:
+							n = ax.plot(x, d, color=cvar[con])
+							con += 1
+
+					v = []
+					counter = 0 #counter variable for legend
+
+					for b in cvar:
+						f = mpatches.Patch(color=b, label=y_axis2[counter])
+						counter += 1
+						v.append(f)
+					plt.legend(handles=v)
+
+					# Testing legend patches (don't uncomment):
+
+					# ax.legend([n], ['One', 'Two', 'Three'], bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+					# plt.box(False)
+					# f = mpatches.Patch(label='The red data')
+					# e = mpatches.Patch(label='The red data')
+					# g = mpatches.Patch(label='The red data')
+
+					# Tpatches = [f, e, g]
+					# return fig
+					# plt.savefig('static/images/instant_plot.png')
+					# return new_data
+
+					# Converting generated figure into an HTML readable format
+					pngImage = io.BytesIO()
+					FigureCanvas(fig).print_png(pngImage)
+					pngImageB64String = "data:image/png;base64,"
+					pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+
+					# Rendering an instance of the generated plot
+					return render_template('plot.html', image=pngImageB64String)
+
+				except KeyError:
+					# return df1
+					flash("Field error: Invalid column name(s)", "fail")
 
 		except ValueError:
-			flash("That file type is not supported, upload a .xlsx file")
+			flash("That file type is not supported, upload a .xlsx file", "fail")
 
-		# return pngImageB64String
-
-
-		
-
-
-
-		# except KeyError:
-		# 	return df
-				# flash("Please enter the correct keys keys, can't get required columns from your data")
-		# except TypeError:
-		# 	flash("Please make sure your data doesn't have any extra data")
-			
-		
-		
+			# return pngImageB64String
 
 
 			
 
-		
 
-		# return df
-		# filename.FileStorage('uploads/images')
-		# print(filename)
-		# ext = os.path.splitext(filename)[1]
-		# new_filename = uuid.uuid4().hex + ext
-		# print(filename)
 
-		# uset.save(filename)
+			# except KeyError:
+			# 	return df
+					# flash("Please enter the correct keys keys, can't get required columns from your data")
+			# except TypeError:
+			# 	flash("Please make sure your data doesn't have any extra data")
+				
+			
+			
+
+
+				
+
+			
+
+			# return df
+			# filename.FileStorage('uploads/images')
+			# print(filename)
+			# ext = os.path.splitext(filename)[1]
+			# new_filename = uuid.uuid4().hex + ext
+			# print(filename)
+
+			# uset.save(filename)
 		
-	return render_template('dashboard.html', form=form)
+	return render_template('dashboard.html', form=form, form2=form2)
 
     
 
