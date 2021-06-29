@@ -49,7 +49,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 # app.config.from_object(__name__)
 # Session(app)
 app.config['UPLOADED_IMAGES_DEST'] = 'static/images'
-uset = UploadSet('images', extensions=('xls', 'xlsx'))
+uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 server = Server()
@@ -153,15 +153,15 @@ def upload_file():
 					file = uset.save(file)
 					db = server['flaskdb']
 					post = {"excel":file}
+				
+					if '.xlsx' or '.csv' in file:
+						doc_id, doc_rev=db.save(post)
+						flash("Upload success! Please select your excel sheet from the dropdown", "success")
+						return redirect('/plotchart')
+					else:
+						flash("Please upload an excel (.xlsx) file", 'fail')
 				except UploadNotAllowed:
-					flash('Please uplaod an excel (.xlsx) file')
-				# print(file)
-				if '.xlsx' in file:
-					doc_id, doc_rev=db.save(post)
-					flash("Upload success! Please select your excel sheet from the dropdown", "success")
-					return redirect('/plotchart')
-				else:
-					flash("Please upload an excel (.xlsx) file")
+					flash('Please uplaod an excel (.xlsx or a .csv) file', 'fail')
 
 
 			if "plot" in request.form and form.validate():		
@@ -173,8 +173,10 @@ def upload_file():
 
 				y_axis2 = form.data2.data
 				y_axis2 = y_axis2.split(", ") #this is a list object (converting y_axis data to list)
-
-				df = pd.read_excel('static/images/'+exfile)
+				if '.xlsx' in exfile:
+					df = pd.read_excel('static/images/'+exfile)
+				elif '.csv' in exfile:
+					df = pd.read_csv('static/images/'+exfile)
 				df2 = [raw.replace(' ', '_') for raw in df.columns]
 				df.columns = df2
 				df1 = df.to_dict()
@@ -189,7 +191,8 @@ def upload_file():
 
 					plotdata = []
 					for a in y_axis2:
-						plotdata.append(df[a]) # populating df with each data in y_axis2 declared earlier
+						# Cleaning CSV/Excel string/float issue irregularities
+						plotdata.append(df[a].astype(str).str.replace(",","").astype(float)) # populating df with each data in y_axis2 declared earlier
 					
 					# print(type(plotdata))
 					# return new_data
@@ -211,18 +214,18 @@ def upload_file():
 						for i in range(0, dif):
 							cvar.append('black')
 						for d in plotdata:
-							n = ax.plot(x, d, color=cvar[con])
+							n = ax.plot(x, d.apply(lambda x: float(x)), color=cvar[con])
 							con += 1
 					elif len(cvar)>len(plotdata):
 						dif2 = len(cvar)-len(plotdata)
 						for i in range(0, dif2):
 							cvar.pop()
 						for d in plotdata:
-							n = ax.plot(x, d, color=cvar[con])
+							n = ax.plot(x, d.apply(lambda x: float(x)), color=cvar[con])
 							con += 1
 					else:
 						for d in plotdata:
-							n = ax.plot(x, d, color=cvar[con])
+							n = ax.plot(x, d.apply(lambda x: float(x)), color=cvar[con])
 							con += 1
 
 					v = []

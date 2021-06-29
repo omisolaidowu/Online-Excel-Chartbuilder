@@ -6,7 +6,7 @@
 <html>
 <head>
 {% block title %}
-	<title>home</title>
+	<title>Dashboard</title>
 {% endblock %}
 </head>
 
@@ -32,18 +32,7 @@
   {% endif %}
   {% endwith %}
 
-  {% with neutral = get_flashed_messages(category_filter=["neutral"]) %}
-    {% if neutral %}
-  <div class="message-neutral">
-    {% for message in neutral %}
-      <p><h2>{{ message }}</h2></p>
-    {% endfor %}
-  </div>
-   
-  {% endif %}
-  {% endwith %}
-
-
+  
   {% with fail = get_flashed_messages(category_filter=["fail"]) %}
     {% if fail %}
   <div class="message-fail">
