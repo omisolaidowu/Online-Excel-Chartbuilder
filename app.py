@@ -214,18 +214,18 @@ def upload_file():
 						for i in range(0, dif):
 							cvar.append('black')
 						for d in plotdata:
-							n = ax.plot(x, d.apply(lambda x: float(x)), color=cvar[con])
+							n = ax.plot(x, d, color=cvar[con])
 							con += 1
 					elif len(cvar)>len(plotdata):
 						dif2 = len(cvar)-len(plotdata)
 						for i in range(0, dif2):
 							cvar.pop()
 						for d in plotdata:
-							n = ax.plot(x, d.apply(lambda x: float(x)), color=cvar[con])
+							n = ax.plot(x, d, color=cvar[con])
 							con += 1
 					else:
 						for d in plotdata:
-							n = ax.plot(x, d.apply(lambda x: float(x)), color=cvar[con])
+							n = ax.plot(x, d, color=cvar[con])
 							con += 1
 
 					v = []
