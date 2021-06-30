@@ -1,5 +1,5 @@
 from forms import RegistrationForm, UserPostForm, upload, excels
-from flask import Flask, g, session
+from flask import Flask, g, session, jsonify
 from flask import render_template
 from db import Post, User
 from couchdb import Server
@@ -29,6 +29,7 @@ from flask_uploads import UploadNotAllowed
 import pandas as pd
 import openpyxl
 import numpy as np 
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import io
@@ -58,7 +59,14 @@ def linePlot():
 	map_func = '''function(doc) { emit(doc.doc_rev, doc); }'''
 	feed = User.query(e_file, map_func, reduce_fun=None, reverse=True)
 	form.exsheets.choices = [(i.excel) for i in feed]
-	# print(form.exsheets.choices)
+	# exfile = form.exsheets.data
+	# if form.validate():
+	# 	exfile = form.exsheets.data
+	# 	df = pd.read_csv('static/images/'+exfile)
+	# 	df = df.to_html()
+	# 	return render_template("lineplot.html", df=df)
+	# df = df.to_html()
+	# # print(form.exsheets.choices)
 
 	
 	if request.method == 'POST':	
@@ -68,6 +76,9 @@ def linePlot():
 			if file and form2.validate():
 				try:
 					file = uset.save(file)
+					
+			
+
 					db = server['flaskdb']
 					post = {"excel":file}
 				
@@ -75,10 +86,24 @@ def linePlot():
 						doc_id, doc_rev=db.save(post)
 						flash("Upload success! Please select your excel sheet from the dropdown", "success")
 						return redirect('/plotchart')
+						# return flask_excel.ExcelRequest.get_sheet(field_name="Forestry", sheet_name="Barnabase.xlsx", "success")
+						
 					else:
 						flash("Please upload an excel (.xlsx) file", 'fail')
 				except UploadNotAllowed:
 					flash('Please uplaod an excel (.xlsx or a .csv) file', 'fail')
+
+
+			if "view" in request.form and form.validate():
+				myfile = form.exsheets.data
+				if '.xlsx' in myfile:
+					df = pd.read_excel('static/images/'+myfile)
+				elif '.csv' in myfile:
+					df = pd.read_csv('static/images/'+myfile)
+				df = df.to_html()
+				flash(df, "neutral")
+
+
 
 
 			if "plot" in request.form and form.validate():		
@@ -91,12 +116,16 @@ def linePlot():
 				y_axis2 = form.data2.data
 				y_axis2 = y_axis2.split(", ") #this is a list object (converting y_axis data to list)
 				if '.xlsx' in exfile:
+					
 					df = pd.read_excel('static/images/'+exfile)
 				elif '.csv' in exfile:
+					
 					df = pd.read_csv('static/images/'+exfile)
 				df2 = [raw.replace(' ', '_') for raw in df.columns]
 				df.columns = df2
 				df1 = df.to_dict()
+				
+				df4 = df.to_html()
 				for i in df.columns:
 					i = i
 
@@ -176,7 +205,7 @@ def linePlot():
 					pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
 					# Rendering an instance of the generated plot
-					return render_template('line.html', image=pngImageB64String)
+					return render_template('line.html', image=pngImageB64String, df4=df4)
 
 				except KeyError:
 					# return df1

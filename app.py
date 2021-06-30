@@ -1,4 +1,4 @@
-from flask import Flask, g, session
+from flask import Flask, g, session, jsonify
 from flask import render_template
 from db import Post, User
 from couchdb import Server
@@ -24,6 +24,7 @@ import os
 from flask_uploads import IMAGES, configure_uploads, UploadSet 
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
+import flask_excel as excel
 
 app = Flask(__name__, static_url_path='/static')
 app.debug=True
@@ -43,8 +44,12 @@ configure_uploads(app, uset)
 # # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 server = Server()
 
+
 @app.route("/", methods=["GET", "POST"])
 def home():
+	
+
+
 	# form = UserPostForm(request.form)
 	return render_template('dashboard.html')
 

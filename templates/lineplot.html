@@ -25,7 +25,7 @@
     {% if success %}
   <div class="message-success">
     {% for message in success %}
-      <p><h2>{{ message }}</h2></p>
+      <p><h2>{{ message | safe}}</h2></p>
     {% endfor %}
   </div>
    
@@ -48,7 +48,16 @@
   <p>{{form2.excel}}{{csrf_token}}</p>
   <p><button type="submit"><strong>Upload Data</strong></button></p>
 
-
+  {% with neutral = get_flashed_messages(category_filter=["neutral"]) %}
+    {% if neutral %}
+  <div class="message-neutral">
+    {% for message in neutral %}
+      <p>{{ message | safe}}</p>
+    {% endfor %}
+  </div>
+   
+  {% endif %}
+  {% endwith %}
 
 	<form action="/plotchart" method="POST" enctype="multipart/form-data">
   <p><strong>Select your Excel sheet</strong> {{form.exsheets}}{{csrf_token}}</p>
@@ -57,9 +66,8 @@
   <p><strong>Give your project a name</strong> {{form.project}}{{csrf_token}}</p>
   
   <button type="submit" name="plot"><strong>Plot Chart</strong></button>
+  <button type="submit" name="view"><strong>View Data Instead</strong></button>
 </form>
-
-{{i}}
 
 </div>
 

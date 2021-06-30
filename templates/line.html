@@ -20,11 +20,13 @@
 		<a href="#">Profile</a>
 		<a href="/feed">My Feeds</a>
 	</nav>
-  <img src="{{image}}" class="image">
+  <img src="{{image}}" class="image" id="image">
 
  <button type="submit" id="btn" class="btn"><strong>Download Graph</strong></button>
 
  <a href="/plotchart"><h2 class="back">Plot another line</h2></a>
+
+{{df4|safe}}
 	
 <script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>
 </body>
