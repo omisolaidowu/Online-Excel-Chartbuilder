@@ -16,13 +16,15 @@
 {% block body %}
 <body>
 	<nav id="nav-content" class="nav-content">
-		<a href="/plotchart">Dashboard</a>
+		<a href="/">Dashboard</a>
 		<a href="#">Profile</a>
 		<a href="/feed">My Feeds</a>
 	</nav>
-  <img src="{{image}}" id="image">
+  <img src="{{image}}" class="image">
 
  <button type="submit" id="btn" class="btn"><strong>Download Graph</strong></button>
+
+ <a href="/plotchart"><h2 class="back">Plot another line</h2></a>
 	
 <script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>
 </body>

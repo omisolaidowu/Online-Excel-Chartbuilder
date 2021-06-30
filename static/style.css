@@ -20,7 +20,7 @@
 	border-width: 3px;
 }
 
-img{
+.image{
 	width:1000px;
 	height: 500px;
 	margin-left: 10%;
@@ -104,6 +104,30 @@ button{
 	color:green;
 }
 
+.chart-line{
+	width: 200px;
+	height:200px;
+	margin-top: 5%;
+	margin-left: 25%;
+}
+
+
+
+a{
+	text-decoration: none;
+}
+.chart-line-text{
+	margin-left: 25%;
+	color: black;
+}
+
+.chart-line-text:hover{
+	color:green;
+}
+
+.back{
+	margin-left: 40%;
+}
 /*.created-form{
 	display: none;
 }*/
