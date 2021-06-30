@@ -63,12 +63,6 @@ def home():
 	# 	return redirect('/')
 
 
-		
-	
-
-
-
-
 # The chart builder:
 @app.route('/plotchart', methods=['GET', 'POST'])	
 def bring():
