@@ -12,6 +12,7 @@ from couchdb.http import PreconditionFailed
 from flaskext.couchdb import ViewDefinition
 # import simplejson
 from charts.line import linePlot
+from charts.bars import barPlot
 # from bson import json_util
 # import json
 from encoder import DateTimeEncoder
@@ -72,6 +73,10 @@ def home():
 @app.route('/plotchart', methods=['GET', 'POST'])	
 def bring():
 	return linePlot()
+
+@app.route('/barchart', methods=['GET', 'POST'])	
+def myBar():
+	return barPlot()
 
 
 @app.route('/register', methods=['GET', 'POST'])

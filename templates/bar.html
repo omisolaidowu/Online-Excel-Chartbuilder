@@ -1,0 +1,79 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "base.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% block title %}
+	<title>Lineplot</title>
+{% endblock %}
+</head>
+
+{% block body %}
+<body>
+	
+	<nav id="nav-content" class="nav-content">
+		<a href="/">Dashboard</a>
+		<a href="#">Profile</a>
+		<a href="/feed">My Feeds</a>
+	</nav>
+  
+
+  <div class="formdiv">
+    {% with success = get_flashed_messages(category_filter=["success"]) %}
+    {% if success %}
+  <div class="message-success">
+    {% for message in success %}
+      <p><h2>{{ message | safe}}</h2></p>
+    {% endfor %}
+  </div>
+   
+  {% endif %}
+  {% endwith %}
+
+  
+  {% with fail = get_flashed_messages(category_filter=["fail"]) %}
+    {% if fail %}
+  <div class="message-fail">
+    {% for message in fail %}
+      <p><h2>{{ message }}</h2></p>
+    {% endfor %}
+  </div>
+   
+  {% endif %}
+  {% endwith %}
+
+  <form action="/barchart" method="POST" enctype="multipart/form-data">
+  <p>{{form2.excel}}{{csrf_token}}</p>
+  <p><button type="submit"><strong>Upload Data</strong></button></p>
+
+  {% with neutral = get_flashed_messages(category_filter=["neutral"]) %}
+    {% if neutral %}
+  <div class="message-neutral">
+    {% for message in neutral %}
+      <p>{{ message | safe}}</p>
+    {% endfor %}
+  </div>
+   
+  {% endif %}
+  {% endwith %}
+
+	<form action="/barchart" method="POST" enctype="multipart/form-data">
+  <p><strong>Select your Excel sheet</strong> {{form.exsheets}}{{csrf_token}}</p>
+  <p><strong>Enter name of x column</strong> {{form.data1}}{{csrf_token}}</p>
+  <p><strong>Enter name of y column(s)</strong> {{form.data2}}{{csrf_token}}</p>
+  <p><strong>Give your project a name</strong> {{form.project}}{{csrf_token}}</p>
+  
+  <button type="submit" name="bars"><strong>Plot Chart</strong></button>
+  <button type="submit" name="view"><strong>View Data Instead</strong></button>
+</form>
+
+</div>
+
+
+<!-- <img src={{image}} alt="Chart"> -->
+</body>
+{% endblock %}
+
+</html>

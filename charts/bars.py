@@ -47,8 +47,7 @@ configure_uploads(app, uset)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 server = Server()
 
-
-def linePlot():
+def barPlot():
 
 	# This block is getting the excel sheet name from the database and populating it to -->
 	# SelectField in forms.py 
@@ -103,7 +102,7 @@ def linePlot():
 				df = df.to_html()
 				flash(df, "neutral")
 
-			if "plot" in request.form and form.validate():		
+			if "bars" in request.form and form.validate():		
 				x_axis = form.data1.data
 				y_axis = form.data2.data
 				exfile = form.exsheets.data
@@ -142,8 +141,9 @@ def linePlot():
 					# print(type(plotdata))
 					# return new_data
 					fig, ax = plt.subplots()
-					x = df[x_axis]
-					plt.xlabel(x_axis)
+					x_axis = df[x_axis]
+					x = np.arange(len(x_axis))
+					# plt.xlabel(x, x_axis)
 					plt.ylabel('Frequency of: {}'.format(y_axis))
 					plt.title(form.project.data)
 
@@ -151,59 +151,162 @@ def linePlot():
 
 					# cvar = form.color.data.split(", ") # in case i later decide to allow users enter colours
 
+					
+					v = 0
+					g = 0
+
 					cvar = ['blue', 'red', 'green', 'brown', 'indigo']
-					con = 0 # Counter variable for colors:
-					# Code to increment colors or decrement colors and legend
-					if len(plotdata)>len(cvar):
-						dif = len(plotdata)-len(cvar)
-						for i in range(0, dif):
-							cvar.append('black')
-						for d in plotdata:
-							n = ax.plot(x, d, color=cvar[con])
-							con += 1
-					elif len(cvar)>len(plotdata):
-						dif2 = len(cvar)-len(plotdata)
-						for i in range(0, dif2):
-							cvar.pop()
-						for d in plotdata:
-							n = ax.plot(x, d, color=cvar[con])
-							con += 1
-					else:
-						for d in plotdata:
-							n = ax.plot(x, d, color=cvar[con])
-							con += 1
 
-					v = []
-					counter = 0 #counter variable for legend
+					# con = 0 # Counter variable for colors:
+										# Code to increment colors or decrement colors and legend
+					if len(plotdata)>3:
+						bar_width = 0.18
+						if len(plotdata)>len(cvar):
+							dif = len(plotdata)-len(cvar)
+							for i in range(0, dif):
+								cvar.append('black')
+							
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.2, zorder=1, color=cvar[g])
+								v +=1.1
+								g +=1
+							
+								
+						elif len(cvar)>len(plotdata):
+							dif2 = len(cvar)-len(plotdata)
+							for i in range(0, dif2):
+								cvar.pop()
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.2, zorder=1, color=cvar[g])
+								v += 1.1
+								g +=1
+								
+						else:
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.2, zorder=1, color=cvar[g])
+								v += 1.1
+								g +=1
+						v = []
+						counter = 0 #counter variable for legend
 
-					for b in cvar:
-						f = mpatches.Patch(color=b, label=y_axis2[counter].replace('_', ' '))
-						counter += 1
-						v.append(f)
-					plt.legend(handles=v)
+						for b in cvar:
+							f = mpatches.Patch(color=b, label=y_axis2[counter])
+							counter += 1
+							v.append(f)
+						plt.legend(handles=v)
+						  
+						plt.xticks(x, x_axis)
+						pngImage = io.BytesIO()
+						FigureCanvas(fig).print_png(pngImage)
+						pngImageB64String = "data:image/png;base64,"
+						pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
-					# Testing legend patches (don't uncomment):
+						# Rendering an instance of the generated plot
+						return render_template('barchart.html', image=pngImageB64String, df4=df4)
+					elif len(plotdata)>2 or len(plotdata)==3:
+						bar_width = 0.2
+						if len(plotdata)>len(cvar):
+							dif = len(plotdata)-len(cvar)
+							for i in range(0, dif):
+								cvar.append('black')
+							
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.25, zorder=1, color=cvar[g])
+								v +=1.1
+								g +=1
+							
+								
+						elif len(cvar)>len(plotdata):
+							dif2 = len(cvar)-len(plotdata)
+							for i in range(0, dif2):
+								cvar.pop()
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.25, zorder=1, color=cvar[g])
+								v += 1.1
+								g +=1
+								
+						else:
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.25, zorder=1, color=cvar[g])
+								v += 1.1
+								g +=1
+						v = []
+						counter = 0 #counter variable for legend
 
-					# ax.legend([n], ['One', 'Two', 'Three'], bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
-					# plt.box(False)
-					# f = mpatches.Patch(label='The red data')
-					# e = mpatches.Patch(label='The red data')
-					# g = mpatches.Patch(label='The red data')
+						for b in cvar:
+							f = mpatches.Patch(color=b, label=y_axis2[counter])
+							counter += 1
+							v.append(f)
+						plt.legend(handles=v)
+						  
+						plt.xticks(x, x_axis)
+						pngImage = io.BytesIO()
+						FigureCanvas(fig).print_png(pngImage)
+						pngImageB64String = "data:image/png;base64,"
+						pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
-					# Tpatches = [f, e, g]
-					# return fig
-					# plt.savefig('static/images/instant_plot.png')
-					# return new_data
+						# Rendering an instance of the generated plot
+						return render_template('barchart.html', image=pngImageB64String, df4=df4)
+					elif len(plotdata)>1 or len(plotdata)==2:
+						bar_width = 0.34
+						if len(plotdata)>len(cvar):
+							dif = len(plotdata)-len(cvar)
+							for i in range(0, dif):
+								cvar.append('black')
+							
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.4, zorder=1, color=cvar[g])
+								v +=1.1
+								g +=1
+							
+								
+						elif len(cvar)>len(plotdata):
+							dif2 = len(cvar)-len(plotdata)
+							for i in range(0, dif2):
+								cvar.pop()
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.4, zorder=1, color=cvar[g])
+								v += 1.1
+								g +=1
+								
+						else:
+							for d in plotdata:
+								n = ax.bar(x+bar_width*v, d, 0.4, zorder=1, color=cvar[g])
+								v += 1.1
+								g +=1
+						v = []
+						counter = 0 #counter variable for legend
 
-					# Converting generated figure into an HTML readable format
-					pngImage = io.BytesIO()
-					FigureCanvas(fig).print_png(pngImage)
-					pngImageB64String = "data:image/png;base64,"
-					pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+						for b in cvar:
+							f = mpatches.Patch(color=b, label=y_axis2[counter])
+							counter += 1
+							v.append(f)
+						plt.legend(handles=v)
+						  
+						plt.xticks(x, x_axis)
+						pngImage = io.BytesIO()
+						FigureCanvas(fig).print_png(pngImage)
+						pngImageB64String = "data:image/png;base64,"
+						pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
-					# Rendering an instance of the generated plot
-					return render_template('line.html', image=pngImageB64String, df4=df4)
+						# Rendering an instance of the generated plot
+						return render_template('barchart.html', image=pngImageB64String, df4=df4)
+					
 
+
+					elif len(plotdata)==1:
+						for b in plotdata:
+							ax.bar(x, b, 0.5, color="brown")
+						plt.xticks(x, x_axis)
+						f = [mpatches.Patch(color="brown", label=y_axis)]
+						plt.legend(handles=f)
+						pngImage = io.BytesIO()
+						FigureCanvas(fig).print_png(pngImage)
+						pngImageB64String = "data:image/png;base64,"
+						pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+
+						# Rendering an instance of the generated plot
+						return render_template('barchart.html', image=pngImageB64String, df4=df4)
 				except KeyError:
 					# return df1
 					flash("Field error: Invalid column name(s)", "fail")
@@ -234,5 +337,4 @@ def linePlot():
 			# print(filename)
 
 			# uset.save(filename)
-	return render_template('lineplot.html', form=form, form2=form2)
-	
+	return render_template('bar.html', form=form, form2=form2)
