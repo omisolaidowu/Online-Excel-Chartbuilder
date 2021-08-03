@@ -3,85 +3,91 @@ import pandas as pd
 import numpy as np 
 import matplotlib.patches as mpatches
 
-df = pd.read_excel('static/images/Coliform1.xlsx')
+# df = pd.read_excel('static/images/Coliform1.xlsx')
   
-x_axis = df['Months']
+# x_axis = df['Months']
 
-y1 = df['ST1']
-y2 = df['ST2']
-# Ygirls = [10,20,20,40,69]
-# Zboys = [20,30,25,30,56]
-# nboys = [20,40,35,40,76]
-# mboys = [30,60,75,80,45]
-# tboys = [150,60,18,48,87]
+# y1 = df['ST1']
+# y2 = df['ST2']
+# # Ygirls = [10,20,20,40,69]
+# # Zboys = [20,30,25,30,56]
+# # nboys = [20,40,35,40,76]
+# # mboys = [30,60,75,80,45]
+# # tboys = [150,60,18,48,87]
 
 
-y_axis = [y1, y2]
+# y_axis = [y1, y2]
 
 
   
-x = np.arange(len(x_axis))
+# x = np.arange(len(x_axis))
 
-bar_width = 0.18
-v = 0
-g = 0
+# bar_width = 0.18
+# v = 0
+# g = 0
 
-cvar = ['blue', 'red', 'green', 'brown', 'indigo']
-fig, ax = plt.subplots()
+# cvar = ['blue', 'red', 'green', 'brown', 'indigo']
+# fig, ax = plt.subplots()
 
-# con = 0 # Counter variable for colors:
-					# Code to increment colors or decrement colors and legend
-if len(y_axis)>1:
-	if len(y_axis)>len(cvar):
-		dif = len(y_axis)-len(cvar)
-		for i in range(0, dif):
-			cvar.append('black')
+# # con = 0 # Counter variable for colors:
+# 					# Code to increment colors or decrement colors and legend
+# if len(y_axis)>1:
+# 	if len(y_axis)>len(cvar):
+# 		dif = len(y_axis)-len(cvar)
+# 		for i in range(0, dif):
+# 			cvar.append('black')
 		
-		for d in y_axis:
-			n = ax.bar(x_axis+bar_width*v, d, 0.18, zorder=1, color=cvar[g])
-			v +=1.1
-			g +=1
+# 		for d in y_axis:
+# 			n = ax.bar(x_axis+bar_width*v, d, 0.18, zorder=1, color=cvar[g])
+# 			v +=1.1
+# 			g +=1
 		
 			
-	elif len(cvar)>len(y_axis):
-		dif2 = len(cvar)-len(y_axis)
-		for i in range(0, dif2):
-			cvar.pop()
-		for d in y_axis:
-			n = ax.bar(x_axis+bar_width*v, d, 0.18, zorder=1, color=cvar[g])
-			v += 1.1
-			g +=1
+# 	elif len(cvar)>len(y_axis):
+# 		dif2 = len(cvar)-len(y_axis)
+# 		for i in range(0, dif2):
+# 			cvar.pop()
+# 		for d in y_axis:
+# 			n = ax.bar(x_axis+bar_width*v, d, 0.18, zorder=1, color=cvar[g])
+# 			v += 1.1
+# 			g +=1
 			
-	else:
-		for d in y_axis:
-			n = ax.bar(x_axis+bar_width*v, d, 0.18, zorder=1, color=cvar[g])
-			v += 1.1
-			g +=1
-	v = []
-	counter = 0 #counter variable for legend
+# 	else:
+# 		for d in y_axis:
+# 			n = ax.bar(x_axis+bar_width*v, d, 0.18, zorder=1, color=cvar[g])
+# 			v += 1.1
+# 			g +=1
+# 	v = []
+# 	counter = 0 #counter variable for legend
 
-	for b in cvar:
-		f = mpatches.Patch(color=b, label=y_axis[counter])
-		counter += 1
-		v.append(f)
-	plt.legend(handles=v)
-	plt.show()
+# 	for b in cvar:
+# 		f = mpatches.Patch(color=b, label=y_axis[counter])
+# 		counter += 1
+# 		v.append(f)
+# 	plt.legend(handles=v)
+# 	plt.show()
 	  
-	# plt.xticks(x, x_axis)
-	# pngImage = io.BytesIO()
-	# FigureCanvas(fig).print_png(pngImage)
-	# pngImageB64String = "data:image/png;base64,"
-	# pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+# 	# plt.xticks(x, x_axis)
+# 	# pngImage = io.BytesIO()
+# 	# FigureCanvas(fig).print_png(pngImage)
+# 	# pngImageB64String = "data:image/png;base64,"
+# 	# pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
 
-	# Rendering an instance of the generated plot
-	# return render_template('barchart.html', image=pngImageB64String, df4=df4)
-elif len(y_axis)==1:
-	for b in y_axis:
-		ax.bar(x, b, 0.5, color="brown")
-	plt.xticks(x, x_axis)
-	f = [mpatches.Patch(color="brown", label=y_axis)]
-	plt.legend(handles=f)
-	plt.show()
+# 	# Rendering an instance of the generated plot
+# 	# return render_template('barchart.html', image=pngImageB64String, df4=df4)
+# elif len(y_axis)==1:
+# 	for b in y_axis:
+# 		ax.bar(x, b, 0.5, color="brown")
+# 	plt.xticks(x, x_axis)
+# 	f = [mpatches.Patch(color="brown", label=y_axis)]
+# 	plt.legend(handles=f)
+# 	plt.show()
+
+b = [1, 23, 4, 5]
+
+
+x = np.arange(len(b))
+print(x)
 	# pngImage = io.BytesIO()
 	# FigureCanvas(fig).print_png(pngImage)
 	# pngImageB64String = "data:image/png;base64,"

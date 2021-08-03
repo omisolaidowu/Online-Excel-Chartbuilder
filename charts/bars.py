@@ -167,7 +167,7 @@ def barPlot():
 								cvar.append('black')
 							
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.2, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.21, zorder=2, color=cvar[g])
 								v +=1.1
 								g +=1
 							
@@ -177,13 +177,13 @@ def barPlot():
 							for i in range(0, dif2):
 								cvar.pop()
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.2, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.2, zorder=2, color=cvar[g])
 								v += 1.1
 								g +=1
 								
 						else:
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.2, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.2, zorder=2, color=cvar[g])
 								v += 1.1
 								g +=1
 						v = []
@@ -195,7 +195,7 @@ def barPlot():
 							v.append(f)
 						plt.legend(handles=v)
 						  
-						plt.xticks(x, x_axis)
+						plt.xticks(np.arange(len(plotdata[0]))+0.2, x_axis)
 						pngImage = io.BytesIO()
 						FigureCanvas(fig).print_png(pngImage)
 						pngImageB64String = "data:image/png;base64,"
@@ -211,7 +211,7 @@ def barPlot():
 								cvar.append('black')
 							
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.25, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.25, zorder=2, color=cvar[g])
 								v +=1.1
 								g +=1
 							
@@ -221,13 +221,13 @@ def barPlot():
 							for i in range(0, dif2):
 								cvar.pop()
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.25, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.25, zorder=2, color=cvar[g])
 								v += 1.1
 								g +=1
 								
 						else:
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.25, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.25, zorder=2, color=cvar[g])
 								v += 1.1
 								g +=1
 						v = []
@@ -239,7 +239,7 @@ def barPlot():
 							v.append(f)
 						plt.legend(handles=v)
 						  
-						plt.xticks(x, x_axis)
+						plt.xticks(np.arange(len(plotdata[0]))+0.2, x_axis)
 						pngImage = io.BytesIO()
 						FigureCanvas(fig).print_png(pngImage)
 						pngImageB64String = "data:image/png;base64,"
@@ -255,7 +255,7 @@ def barPlot():
 								cvar.append('black')
 							
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.4, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.4, zorder=2, color=cvar[g])
 								v +=1.1
 								g +=1
 							
@@ -265,13 +265,13 @@ def barPlot():
 							for i in range(0, dif2):
 								cvar.pop()
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.4, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.4, zorder=2, color=cvar[g])
 								v += 1.1
 								g +=1
 								
 						else:
 							for d in plotdata:
-								n = ax.bar(x+bar_width*v, d, 0.4, zorder=1, color=cvar[g])
+								n = ax.bar(x+bar_width*v, d, 0.4, zorder=2, color=cvar[g])
 								v += 1.1
 								g +=1
 						v = []
@@ -283,7 +283,7 @@ def barPlot():
 							v.append(f)
 						plt.legend(handles=v)
 						  
-						plt.xticks(x, x_axis)
+						plt.xticks(np.arange(len(plotdata[0]))+0.17, x_axis)
 						pngImage = io.BytesIO()
 						FigureCanvas(fig).print_png(pngImage)
 						pngImageB64String = "data:image/png;base64,"
