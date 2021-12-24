@@ -1,16 +1,13 @@
 from forms import RegistrationForm, UserPostForm, upload, excels
 from flask import Flask, g, session, jsonify
 from flask import render_template
-from db import Post, User
+# from db import Post, User
 from couchdb import Server
 from flask import request, redirect, flash, url_for
 from flask import session
 from forms import RegistrationForm, UserPostForm, upload, excels
-from dbsession import DatabaseObject
-from couchdb.client import Database
+
 from uuid import UUID
-from couchdb.http import PreconditionFailed
-from flaskext.couchdb import ViewDefinition
 import simplejson
 # from bson import json_util
 import json
@@ -36,16 +33,20 @@ import io
 import base64
 import matplotlib.patches as mpatches
 import matplotlib
+from pymongo import MongoClient
 
 matplotlib.use('Agg')
 
 app = Flask(__name__)
 
-app.config['UPLOADED_IMAGES_DEST'] = 'static/images'
+app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
+connection = MongoClient()
+db = connection.mydb #database name.
+collection = db.Newcus
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-server = Server()
+
 
 
 def linePlot():
@@ -54,11 +55,10 @@ def linePlot():
 	# SelectField in forms.py 
 	form = upload(request.form)
 	form2 = excels(request.form)
-	server = Server()
-	e_file = server['flaskdb']
-	map_func = '''function(doc) { emit(doc.doc_rev, doc); }'''
-	feed = User.query(e_file, map_func, reduce_fun=None, reverse=True)
-	form.exsheets.choices = [(i.excel) for i in feed]
+	feed = collection.find({})
+	feed = [i for i in feed]
+	form.exsheets.choices = [i['excel'] for i in feed]
+	print(feed)
 	# exfile = form.exsheets.data
 	# if form.validate():
 	# 	exfile = form.exsheets.data
@@ -78,12 +78,10 @@ def linePlot():
 					file = uset.save(file)
 					
 			
-
-					db = server['flaskdb']
 					post = {"excel":file}
 				
 					if '.xlsx' or '.csv' in file:
-						doc_id, doc_rev=db.save(post)
+						collection.insert_one(post)
 						flash("Upload success! Please select your excel sheet from the dropdown", "success")
 						return redirect('/plotchart')
 						# return flask_excel.ExcelRequest.get_sheet(field_name="Forestry", sheet_name="Barnabase.xlsx", "success")
@@ -97,9 +95,11 @@ def linePlot():
 			if "view" in request.form and form.validate():
 				myfile = form.exsheets.data
 				if '.xlsx' in myfile:
-					df = pd.read_excel('static/images/'+myfile)
+					df = pd.read_excel('static/uploads/'+myfile)
 				elif '.csv' in myfile:
-					df = pd.read_csv('static/images/'+myfile)
+					df = pd.read_csv('static/uploads/'+myfile)
+				df2 = [raw.replace(' ', '_') for raw in df.columns]
+				df.columns = df2
 				df = df.to_html()
 				flash(df, "neutral")
 

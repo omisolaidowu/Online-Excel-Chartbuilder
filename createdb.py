@@ -1,7 +1,7 @@
-from db import Post
-from couchdb import Server
+# from db import Post
+# from couchdb import Server
 
-server = Server()
-db = server.create('flaskdb')
-post = Post()
-# post.store(db)
+# server = Server()
+# db = server.create('flaskdb')
+# # post = Post()
+# # post.store(db)

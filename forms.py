@@ -10,8 +10,8 @@ from datetime import datetime
 from uuid import UUID
 import uuid
 from flask_wtf import FlaskForm
-from couchdb import Server
-from db import User
+# from couchdb import Server
+# from db import User
 
 # from app import upload_file
 
