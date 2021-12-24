@@ -1,2 +1,2 @@
 # Online-Excel-Chartbuilder
-An online data science tool for visualizing data and predictive modeling (feature coming after visualizations)
+An online data science tool for data visualization and predictive modeling (feature coming after visualizations)
