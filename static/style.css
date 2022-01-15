@@ -116,11 +116,15 @@ button{
 }
 
 
-.chart-line{
+.chart-line, .chart-bars {
 	width: 200px;
 	height:200px;
 	margin-top: 5%;
-	margin-left: 25%;
+	
+}
+
+.chart-line, .chart-bars{
+	margin-left: 45px;
 }
 
 
@@ -139,6 +143,11 @@ a{
 
 .back{
 	margin-left: 40%;
+}
+
+.directories{
+	display: flex;
+	margin-left: 50px;
 }
 
 ::-webkit-scrollbar-track {

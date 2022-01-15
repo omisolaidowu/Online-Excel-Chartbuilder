@@ -127,10 +127,10 @@ def barPlot():
 				y_axis2 = y_axis2.split(", ") #this is a list object (converting y_axis data to list)
 				if '.xlsx' in exfile:
 					
-					df = pd.read_excel('static/images/'+exfile)
+					df = pd.read_excel('static/uploads/'+exfile)
 				elif '.csv' in exfile:
 					
-					df = pd.read_csv('static/images/'+exfile)
+					df = pd.read_csv('static/uploads/'+exfile)
 				df2 = [raw.replace(' ', '_') for raw in df.columns]
 				df.columns = df2
 				df1 = df.to_dict()
