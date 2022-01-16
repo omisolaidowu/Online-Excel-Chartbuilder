@@ -192,8 +192,8 @@ def barPlot():
 					x_axis = df[x_axis]
 					x = np.arange(len(x_axis))
 					# plt.xlabel(x, x_axis)
-					plt.ylabel('Frequency of: {}'.format(y_axis))
 					plt.xlabel(x_axis)
+					plt.ylabel('Frequency of: {}'.format(y_axis))
 					plt.title(form.project.data)
 
 
