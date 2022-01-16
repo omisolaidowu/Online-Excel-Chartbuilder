@@ -59,16 +59,14 @@ app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
 
-# Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
-#      "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
+     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
 
-# app.config["MONGO_URI"] = Database_URL
-app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+app.config["MONGO_URI"] = Database_URL
 
 mongo = PyMongo(app)
 
-# connection=MongoClient(Database_URL)
-connection=MongoClient()
+connection=MongoClient(Database_URL)
 
 # connection = MongoClient()
 db = connection.mydb #database name.
