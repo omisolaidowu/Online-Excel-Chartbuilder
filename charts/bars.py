@@ -360,8 +360,7 @@ def barPlot():
 					# return df1
 					flash("Field error: Invalid column name(s)", "fail")
 
-		except ValueError:
-			flash("That file type is not supported, upload a .xlsx file", "fail")
+		
 		except FileNotFoundError:
 			flash("Oops! Looks like we can't find that file, please upload another one and select it", "fail")
 
