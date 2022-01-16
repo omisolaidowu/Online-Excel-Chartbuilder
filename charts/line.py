@@ -34,6 +34,14 @@ import base64
 import matplotlib.patches as mpatches
 import matplotlib
 from pymongo import MongoClient
+import pymongo
+
+from dotenv import load_dotenv
+import os
+import urllib.parse
+
+load_dotenv()
+b = os.getenv("PASSWORD")
 
 matplotlib.use('Agg')
 
@@ -42,7 +50,9 @@ app = Flask(__name__)
 app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
-connection = MongoClient()
+Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
+     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+connection = MongoClient(Database_URL)
 db = connection.mydb #database name.
 collection = db.Newcus
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -55,10 +65,16 @@ def linePlot():
 	# SelectField in forms.py 
 	form = upload(request.form)
 	form2 = excels(request.form)
+
+
+
 	feed = collection.find({})
-	feed = [i for i in feed]
-	form.exsheets.choices = [i['excel'] for i in feed]
-	print(feed)
+	if pymongo.errors.NetworkTimeout==True:
+		flash("There was an internal error", "fail")
+	else:
+		feed = [i for i in feed]
+		form.exsheets.choices = [i['excel'] for i in feed]
+		print(feed)
 	# exfile = form.exsheets.data
 	# if form.validate():
 	# 	exfile = form.exsheets.data

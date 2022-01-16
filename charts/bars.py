@@ -36,9 +36,16 @@ import io
 import base64
 import matplotlib.patches as mpatches
 import matplotlib
+import pymongo
 
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
+import urllib.parse
+
+load_dotenv()
+b = os.getenv("PASSWORD")
 
 matplotlib.use('Agg')
 
@@ -47,7 +54,11 @@ app = Flask(__name__)
 app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
-connection = MongoClient()
+
+Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
+     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = Database_URL
+connection = MongoClient(Database_URL)
 db = connection.mydb #database name.
 collection = db.Newcus
 # app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
@@ -67,9 +78,32 @@ def barPlot():
 	# feed = [i for i in feed]
 	# feed = User.query(e_file, map_func, reduce_fun=None, reverse=True)
 	feed = collection.find({})
-	feed = [i for i in feed]
-	form.exsheets.choices = [i['excel'] for i in feed]
-	print(feed)
+	if pymongo.errors.NetworkTimeout==True:
+		flash("There was an internal error", "fail")
+	elif pymongo.errors.ServerSelectionTimeoutError==True:
+		flash("Aww, snap. Our fault. We will fix soon", "fail")
+	else:
+		feed = [i for i in feed]
+		form.exsheets.choices = [i['excel'] for i in feed]
+		print(feed)
+
+	#BELOW IS THE CODE THAT PREVENTS ERROR IF THERE ARE OTHER DATA IN DB. THAT SHOUDL NOT BE
+	# try:
+	# 	if feed != None:
+	# 		feed = [i for i in feed]
+	# 		form.exsheets.choices = [i['excel'] for i in feed]
+	# 		return redirect('/barchart')
+	# 	elif feed == None:
+	# 		return redirect('/barchart')
+	# 	else:
+	# 		return redirect('/')
+
+	# 		# print(feed)
+	# except:
+	# 	flash("This is an internal error, we will fix it soon", "fail")
+	# 	return redirect('/')
+
+			
 	
 	# form.exsheets.choices= [(i.excel) for i in feed]
 	# exfile = form.exsheets.data
@@ -159,6 +193,7 @@ def barPlot():
 					x = np.arange(len(x_axis))
 					# plt.xlabel(x, x_axis)
 					plt.ylabel('Frequency of: {}'.format(y_axis))
+					plt.xlabel(x_axis)
 					plt.title(form.project.data)
 
 

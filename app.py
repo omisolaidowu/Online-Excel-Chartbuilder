@@ -31,9 +31,18 @@ import flask_excel as excel
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 
+from dotenv import load_dotenv
+import os
+import urllib.parse
+import pymongo
+
 app = Flask(__name__, static_url_path='/static')
 app.debug=True
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+load_dotenv()
+b = os.getenv("PASSWORD")
+
+
 
 
 # manager.sync(app)
@@ -49,11 +58,23 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/mydb"
+
+Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
+     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+
+app.config["MONGO_URI"] = Database_URL
+
 mongo = PyMongo(app)
 
-connection = MongoClient()
+connection=MongoClient(Database_URL)
+
+# connection = MongoClient()
 db = connection.mydb #database name.
+
+
+# connection = MongoClient("mongodb+srv://idowupaul:<password>@cluster0.jzhee.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+# db = client.test
+
 collection = {
 	"files": db.Newcus,
 	"users": db.users
@@ -88,11 +109,28 @@ def home():
 # The chart builder:
 @app.route('/plotchart', methods=['GET', 'POST'])	
 def bring():
-	return linePlot()
+	try:
+		return linePlot()
+	except pymongo.errors.NetworkTimeout:
+		flash("Aww snap! Our faul. We will fix soon")
+	except pymongo.errors.ServerSelectionTimeoutError:
+		flash("Aww snap! Connection error. Our faul. We will fix soon")
+	except pymongo.errors.AutoReconnect:
+		flash("Aww snap! Connection error. Our faul. We will fix soon")
+	return flash("Aww snap! Connection error. Our faul. We will fix soon")
+		
 
 @app.route('/barchart', methods=['GET', 'POST'])	
 def myBar():
-	return barPlot()
+	try:
+		return barPlot()
+	except pymongo.errors.NetworkTimeout:
+		flash("Aww snap! Our faul. We will fix soon")
+	except pymongo.errors.ServerSelectionTimeoutError:
+		flash("Aww snap! Connection error. Our faul. We will fix soon")
+	except pymongo.errors.AutoReconnect:
+		flash("Aww snap! Connection error. Our faul. We will fix soon")
+	return flash("Aww snap! Connection error. Our faul. We will fix soon")
 
 
 @app.route('/register', methods=['GET', 'POST'])

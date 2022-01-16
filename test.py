@@ -208,19 +208,21 @@
 # 		print(i)
 
 # # print(myArray)
-arr = ["Welcome", "to"]
+# arr = ["Welcome", "to"]
 
-print("-".join(arr))
+# print("-".join(arr))
 
 
-j = "Idowu"
-print(len(j))
+# j = "Idowu"
+# print(len(j))
 
-a = [3j, 2, 4, 7, 8]
-b =[9, 9]
+# a = [3j, 2, 4, 7, 8]
+# b =[9, 9]
 
-a.append(3, 7)
-print(a)
+# a.append(3, 7)
+# print(a)
+
+
 
 
 # a.pop(2)
@@ -233,7 +235,43 @@ print(a)
 # print(y.read())
 
 # print("IDOWU".capitalize())
+from flask_pymongo import PyMongo
+from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
+import urllib.parse
+load_dotenv()
 
-import re
+
+a = os.getenv("NAME")
+b = os.getenv("PASSWORD")
+
+print(a)
+print(b)
+
+# Database_URL = f'mongodb+srv://idowupaul:{b}'\
+#               '@cluster0.jzhee.mongodb.net/mydb?'\
+#               'retryWrites=true&w=majority'
+
+Database_URL= "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
+     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+
+connection=MongoClient(Database_URL)
 
 
+db = connection.mydb 
+
+user = {"username":"Idowu", "email":"omisolaidowu",
+		"password":"secret"}
+data = {"excel":"Idowu", "ema":"omisolaidowu",
+		"pass":"secret"}
+
+# print(db.Newcus)
+db.Newcus.insert_one(data)
+
+# connection = MongoClient()
+# connection = MongoClient("mongodb+srv://idowupaul:"+b+"@cluster0.jzhee.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+# db = Database_URL.test
+
+# idowupaul
+# omisolaidowu
