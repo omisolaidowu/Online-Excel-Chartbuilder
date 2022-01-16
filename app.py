@@ -146,6 +146,9 @@ def register():
 		return "<h2>Registered successfully</h2>"
 
 	return render_template('register.html', form=form)
+	
+if __name__ == '__main__':
+	app.run()
 
 # @app.route("/feed", methods=["GET", "POST"])
 # def feeds():
