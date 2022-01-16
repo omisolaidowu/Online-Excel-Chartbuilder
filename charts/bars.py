@@ -155,6 +155,8 @@ def barPlot():
 				y_axis = form.data2.data
 				exfile = form.exsheets.data
 
+				labelOfX = x_axis = form.data1.data
+
 
 
 				y_axis2 = form.data2.data
@@ -192,7 +194,7 @@ def barPlot():
 					x_axis = df[x_axis]
 					x = np.arange(len(x_axis))
 					# plt.xlabel(x, x_axis)
-					plt.xlabel(x_axis)
+					plt.xlabel(labelOfX)
 					plt.ylabel('Frequency of: {}'.format(y_axis))
 					plt.title(form.project.data)
 
