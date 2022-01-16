@@ -3,6 +3,6 @@ An online data science tool for data visualization and predictive modeling (feat
 
 **Next plan**: Turn each directory into an API and serve the app with reactjs.
 
-**Note**: I'm yet to add other charts and analysis/predictive features. Those are underway. Currently, you can access this app on https://excel-plot.herokuapp.com/. Loading may be slow at this point as the app is currently on free Heroku Dynos, which may take time to wake on request.
+**Note**: I'm yet to add other charts, analysis/predictive features, and other features. Those are underway. Currently, you can access this app on https://excel-plot.herokuapp.com/. Loading may be slow at this point as the app is currently on free Heroku Dynos, which may take time to wake on request.
 
 
