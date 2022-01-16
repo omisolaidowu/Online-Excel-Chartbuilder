@@ -51,7 +51,5 @@ texttable==1.6.4
 typing-extensions==3.10.0.0
 urllib3==1.26.5
 uuid==1.30
-Werkzeug==2.0.1
 WTForms==2.3.3
 zipp==3.4.1
-C:/Users/user/Envs/plots/Lib/site-packages/
