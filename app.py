@@ -115,15 +115,8 @@ def bring():
 
 @app.route('/barchart', methods=['GET', 'POST'])	
 def myBar():
-	try:
-		return barPlot()
-	except pymongo.errors.NetworkTimeout:
-		flash("Aww snap! Our faul. We will fix soon")
-	except pymongo.errors.ServerSelectionTimeoutError:
-		flash("Aww snap! Connection error. Our faul. We will fix soon")
-	except pymongo.errors.AutoReconnect:
-		flash("Aww snap! Connection error. Our faul. We will fix soon")
-	return flash("Aww snap! Connection error. Our faul. We will fix soon")
+	return barPlot()
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
