@@ -55,16 +55,18 @@ app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
 
-Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
-     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
-app.config["MONGO_URI"] = Database_URL
-connection = MongoClient(Database_URL)
+# Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
+#      "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+# app.config["MONGO_URI"] = Database_URL
+app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+# connection = MongoClient(Database_URL)
+connection = MongoClient()
 db = connection.mydb #database name.
 collection = db.Newcus
-# app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
+
 # mongo = PyMongo(app)
 
-# # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # server = Server()
 
 def barPlot():
