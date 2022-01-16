@@ -54,3 +54,4 @@ uuid==1.30
 Werkzeug==2.0.1
 WTForms==2.3.3
 zipp==3.4.1
+./Users/user/Envs/plots/Lib/site-packages/flask_uploads.py
