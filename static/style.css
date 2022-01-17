@@ -116,7 +116,7 @@ button{
 }
 
 
-.chart-line, .chart-bars {
+.chart-line {
 	width: 200px;
 	height:200px;
 	margin-top: 5%;
@@ -129,6 +129,7 @@ button{
 
 .chart-bars{
 	font-size: 200px;
+	margin-top: 4%;
 }
 
 
