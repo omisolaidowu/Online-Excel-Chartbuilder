@@ -116,7 +116,7 @@ button{
 }
 
 
-.chart-line, .seg-div {
+.chart-line {
 	width: 200px;
 	height:200px;
 	margin-top:100px;
@@ -134,6 +134,7 @@ button{
 
 .seg-div{
 	display: grid;
+	margin-top: 150px;
 }
 
 a{
