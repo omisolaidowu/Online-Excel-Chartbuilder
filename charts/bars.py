@@ -43,7 +43,8 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 import urllib.parse
-
+# from flask_restful import reqparse, abort, Api, Resources
+# api = Api(app)
 load_dotenv()
 b = os.getenv("PASSWORD")
 
@@ -137,6 +138,7 @@ def barPlot():
 						flash("Please upload an excel (.xlsx) file", 'fail')
 				except UploadNotAllowed:
 					flash('Please uplaod an excel (.xlsx or a .csv) file', 'fail')
+					# abort(404, message="Please uplaod an excel (.xlsx or a .csv) file")
 
 
 			if "view" in request.form and form.validate():
