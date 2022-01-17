@@ -62,7 +62,8 @@
 	<form action="/barchart" method="POST" enctype="multipart/form-data">
   <p><strong>Select your Excel sheet</strong> {{form.exsheets}}{{csrf_token}}</p>
   <p><strong>Enter name of x column</strong> {{form.data1}}{{csrf_token}}</p>
-  <p><strong>Enter name of y column(s)</strong> {{form.data2}}{{csrf_token}}</p>
+  <p><strong>Enter name of y column(s) (use comma to separate many columns, e.g X, Y, Z, s...)
+  </strong> {{form.data2}}{{csrf_token}}</p>
   <p><strong>Give your project a name</strong> {{form.project}}{{csrf_token}}</p>
   
   <button type="submit" name="bars"><strong>Plot Chart</strong></button>
