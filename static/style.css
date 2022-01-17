@@ -129,10 +129,12 @@ button{
 
 .chart-bars{
 	font-size: 200px;
-	margin-top: 4%;
+	margin-top: 0%;
 }
 
-
+.seg-div{
+	display: grid;
+}
 
 a{
 	text-decoration: none;
