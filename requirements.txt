@@ -32,7 +32,7 @@ openpyxl==3.0.7
 optional==0.0.1
 optional.py==1.1.0
 pandas==1.2.5
-Pillow==8.2.0
+Pillow==9.0.0
 psycopg2-binary==2.9.1
 pyexcel==0.6.7
 pyexcel-io==0.6.5
