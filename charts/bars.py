@@ -1,22 +1,17 @@
 from forms import RegistrationForm, UserPostForm, upload, excels
 from flask import Flask, g, session, jsonify
 from flask import render_template
-# from db import Post, User
-# from couchdb import Server
+
 from flask import request, redirect, flash, url_for
 from flask import session
 from forms import RegistrationForm, UserPostForm, upload, excels
-from dbsession import DatabaseObject
-# from couchdb.client import Database
+
 from uuid import UUID
-# from couchdb.http import PreconditionFailed
-# from flaskext.couchdb import ViewDefinition
+
 import simplejson
-# from bson import json_util
+
 import json
 from encoder import DateTimeEncoder
-# from flask_session import Session
-# from redis import Redis
 
 from wtforms import FileField
 import os
@@ -45,8 +40,8 @@ import os
 import urllib.parse
 # from flask_restful import reqparse, abort, Api, Resources
 # api = Api(app)
-load_dotenv()
-b = os.getenv("PASSWORD")
+load_dotenv(".env")
+Database_URL = os.environ.get("mongo_URL")
 
 matplotlib.use('Agg')
 
@@ -56,8 +51,7 @@ app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
 
-Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
-     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+
 app.config["MONGO_URI"] = Database_URL
 connection = MongoClient(Database_URL)
 db = connection.mydb #database name.

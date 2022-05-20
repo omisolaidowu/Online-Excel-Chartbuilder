@@ -1,27 +1,16 @@
 from typing import Collection
 from flask import Flask, g, session, jsonify
 from flask import render_template
-# from db import Post, User
-from couchdb import Server
 from flask import request, redirect, flash, url_for
 from flask import session
 from forms import RegistrationForm, UserPostForm, upload, excels
 from dbsession import DatabaseObject
-# from couchdb.client import Database
-# from uuid import UUID
-# from couchdb.http import PreconditionFailed
-# from flaskext.couchdb import ViewDefinition
-# import simplejson
 from charts.line import linePlot
 from charts.bars import barPlot
-# from bson import json_util
-# import json
+
 from encoder import DateTimeEncoder
 from flask_session import Session
-# from flaskext.couchdb import CouchDBManager
-# from redis import Redis
 
-# from wtforms import FileField
 import os
 
 from flask_uploads import IMAGES, configure_uploads, UploadSet 
@@ -35,12 +24,17 @@ from dotenv import load_dotenv
 import os
 import urllib.parse
 import pymongo
+from dotenv import load_dotenv
 
 app = Flask(__name__, static_url_path='/static')
 app.debug=True
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-load_dotenv()
-b = os.getenv("PASSWORD")
+load_dotenv('.env')
+
+
+Database_URL = os.environ.get("mongo_URL")
+
+
 
 
 
@@ -59,8 +53,7 @@ app.config['UPLOADED_IMAGES_DEST'] = 'static/uploads'
 uset = UploadSet('images', extensions=('xls', 'xlsx', 'csv'))
 configure_uploads(app, uset)
 
-Database_URL = "mongodb+srv://idowupaul:" + urllib.parse.quote(b) +\
-     "@cluster0.jzhee.mongodb.net/mydb?retryWrites=true&w=majority"
+ 
 
 app.config["MONGO_URI"] = Database_URL
 
